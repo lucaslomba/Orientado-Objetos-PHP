@@ -5,11 +5,26 @@
 class Conta
 {
     //Definir dados conta
-    private string $cpfTitlar;
-    private string $nomeTitular;
-    private float $saldo = 0;
+    private string $titular;
+    private float $saldo;
+    private static $numeroDeContas = 0;
     //Tipagem disponivel a partir do PHP 7.4
 
+
+    // metodo construtor
+    public function __construct(string $titular)
+    {
+        $this->titular = $titular;
+        $this->saldo = 0;
+
+        self::$numeroDeContas++;
+    }
+
+    // metodo destrtor
+    public function __destruct()
+    {
+        self::$numeroDeContas--;
+    }
 
     //Atribuindo métodos
     public function sacar(float $valorASacar)
@@ -55,22 +70,18 @@ class Conta
         return $this->saldo;
     }
 
-    public function defineCpfTitular(string $cpf): void
+    public static function recuperaNumeroContas(): int
     {
-        $this->cpfTitular = $cpf;
+        return self::$numeroDeContas;
+    }
+
+    public function recuperaNomeTitular(): string
+    {
+        return $this->titular->recuperaNome();
     }
 
     public function recuperaCpfTitular(): string
     {
-        return $this->cpfTitular;
-    }
-
-    public function defineNomeTitular(string $nome): void
-    {
-        $this->nomeTitular = $nome;
-    }
-    public function recuperarNomeTitular(): string
-    {
-        return $this->nomeTitular;
+        return $this->titular->recuperaCPF();
     }
 }
